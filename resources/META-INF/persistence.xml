@@ -10,6 +10,9 @@
       <class>model.aircraftmodel</class>
       <class>model.airport</class>
       <class>model.airway</class>
+      <class>model.flight</class>
+      <class>model.meal</class>
+      <class>model.passenger</class>
       
       <properties>
          <property name = "javax.persistence.jdbc.url" value = "jdbc:mysql://localhost:3306/flightdb"/>
