@@ -19,7 +19,7 @@ public class Meal {
 	public int getID() {
 		return this.fID;
 	}
-	public void setName(int pID) {
+	public void setID(int pID) {
 		this.fID = pID;
 	}
 	public String getName() {
