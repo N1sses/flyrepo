@@ -6,7 +6,6 @@ public enum Status {
 	
 	private String fDisplayedStatus;
 	
-	
 	private Status(String pDisplayedStatus) {
 		this.fDisplayedStatus = pDisplayedStatus;
 	}

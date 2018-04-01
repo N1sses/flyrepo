@@ -1,21 +1,33 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Entity(name = "Airport")
+@Table(name = "airport")
 public class Airport {
+	//Attributes
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int fID;
 	
 	private String fIataCode;
-	private String fCity;
 	
+	//Getters and Setters
+	public int getID() {
+		return this.fID;
+	}
+	public void setID(int pID) {
+		this.fID = pID;
+	}
 	public String getIataCode() {
 		return fIataCode;
 	}
 	public void setIataCode(String pIataCode) {
 		this.fIataCode = pIataCode;
 	}
-	public String getCity() {
-		return fCity;
-	}
-	public void setCity(String pCity) {
-		this.fCity = pCity;
-	}
-
 }
