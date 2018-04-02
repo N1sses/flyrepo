@@ -1,5 +1,6 @@
 package model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +13,12 @@ public class AircraftModel {
 	//Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="AircraftModelID")
 	private int fID;
 	
+	@Column(name="Name")
 	private String fName;
+	@Column(name="Capacity")
 	private int fCapacity;
 	
 	//Getters and Setters

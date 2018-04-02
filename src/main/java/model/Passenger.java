@@ -2,6 +2,7 @@ package model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,12 +16,15 @@ public class Passenger {
 	//Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="PassengerID")
 	private int fID;
+	@Column(name="Name")
 	private String fName;
+	@Column(name="Surname")
 	private String fSurname;
 	
-	@ManyToMany(targetEntity = Flight.class)
-	List<Flight> fFlights;
+	@ManyToMany(mappedBy="fPassengers")
+	private List<Flight> fFlights;
 
 	//Getters and Setters
 	public int getID() {

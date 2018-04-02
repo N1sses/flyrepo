@@ -3,10 +3,15 @@ package model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -18,21 +23,36 @@ public class Flight {
 	//Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="FlightID")
 	private String fID;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="AirwayID")
 	private Airway fAirway;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="AircraftID")
 	private Aircraft fAircraft;
-	
+	 
+	@Convert(converter = LocalDateTimeAttributeConverter.class)
+	@Column(name="Arrival" )
 	private LocalDateTime fArrival;
+	@Convert(converter = LocalDateTimeAttributeConverter.class)
+	@Column(name="Departure")
 	private LocalDateTime fDeparture;
 	
-	@ManyToMany(targetEntity=Passenger.class)
+	@ManyToMany
+	@JoinTable(
+		      name="booking",
+		      joinColumns=@JoinColumn(name="FlightID", referencedColumnName="FlightID"),
+		      inverseJoinColumns=@JoinColumn(name="PassengerID", referencedColumnName="PassengerID"))
 	private List<Passenger> fPassengers;
 	
-	@ManyToMany(targetEntity=Meal.class)
+	@ManyToMany
+	@JoinTable(
+		      name="menu",
+		      joinColumns=@JoinColumn(name="FlightID", referencedColumnName="FlightID"),
+		      inverseJoinColumns=@JoinColumn(name="MealID", referencedColumnName="MealID"))
 	private List<Meal> fMeals;
 	
 	

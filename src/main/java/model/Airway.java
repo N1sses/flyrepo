@@ -2,10 +2,13 @@ package model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,15 +20,18 @@ public class Airway {
 	// Attributes
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="AirwayID")
 	private int fID;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="StartID")
 	private Airport fStart;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="DestinationID")
 	private Airport fDestination;
 
-	@OneToMany(targetEntity=Flight.class)
+	@OneToMany(mappedBy="fAirway")
 	private List<Flight> fFlights;
 
 	//Getters and Setters

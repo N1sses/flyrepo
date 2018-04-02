@@ -1,5 +1,6 @@
 package model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,8 +14,10 @@ public class Airport {
 	//Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="AirportID")
 	private int fID;
 	
+	@Column(name="IataCode")
 	private String fIataCode;
 	
 	//Getters and Setters

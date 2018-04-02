@@ -7,28 +7,32 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity(name = "Meal")
-@Table(name = "meal")
-public class Meal {
-	//Attributes
+@Entity(name = "Role")
+@Table (name="role")
+public class Role {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="MealID")
+	@Column(name="RoleID")
 	private int fID;
-	@Column(name="Name")
+	
+	@Column(name="name")
 	private String fName;
-
-	//Getters and Setters
+	
 	public int getID() {
-		return this.fID;
+		return fID;
 	}
+
 	public void setID(int pID) {
 		this.fID = pID;
 	}
+
 	public String getName() {
-		return this.fName;
+		return fName;
 	}
+
 	public void setName(String pName) {
 		this.fName = pName;
 	}
+	
 }

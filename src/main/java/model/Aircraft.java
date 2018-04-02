@@ -2,11 +2,15 @@ package model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity(name = "Aircraft")
@@ -15,11 +19,14 @@ public class Aircraft {
 	//Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="AircraftID")
 	private String fID;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="AircraftModelID")
 	private AircraftModel fModel;
 	
+	@OneToMany(mappedBy = "fAircraft")
 	private List<Flight> fFlights;
 
 	//Getters and Setters
