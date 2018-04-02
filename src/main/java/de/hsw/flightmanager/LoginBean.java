@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,9 +16,20 @@ import javax.servlet.http.HttpSession;
 import model.User;
 
 @ManagedBean
-@SessionScoped
+@RequestScoped
 public class LoginBean implements Serializable {
 	
+	@ManagedProperty(value = "#{userBean}")
+	private UserBean userBean;
+	
+	public UserBean getUserBean() {
+		return userBean;
+	}
+
+	public void setUserBean(UserBean userBean) {
+		this.userBean = userBean;
+	}
+
 	private EntityManagerFactory emf;
 
 
@@ -58,13 +70,11 @@ public class LoginBean implements Serializable {
 		Query userQuery = em.createNamedQuery("User.findByName", User.class);
 		userQuery.setParameter("name", this.user);
 
-
-		User user = (User) userQuery.getSingleResult();
-		if (valid) {
-			HttpSession session = SessionUtils.getSession();
-			session.setAttribute("username", user);
-			return "admin";
-		} else {
+		try{
+			User user = (User) userQuery.getSingleResult();
+			this.userBean.setCurrentUser(user);
+			return "home";
+		} catch (Exception e){
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -72,12 +82,13 @@ public class LoginBean implements Serializable {
 							"Please enter correct username and Password"));
 			return "login";
 		}
+		
+		
 	}
 
 	//logout event, invalidate session
 	public String logout() {
-		HttpSession session = SessionUtils.getSession();
-		session.invalidate();
+		
 		return "login";
 	}
 }
