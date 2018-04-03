@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class Airway {
 	// Attributes
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="AirwayID")
 	private int fID;
 	

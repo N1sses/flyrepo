@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Passenger {
 	//Attributes
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="PassengerID")
 	private int fID;
 	@Column(name="Name")

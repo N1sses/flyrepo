@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Flight {
 	//Attributes
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="FlightID")
 	private String fID;
 	
@@ -80,6 +80,9 @@ public class Flight {
 	}
 	public void setPassengers(List<Passenger> pPassengers) {
 		this.fPassengers = pPassengers;
+	}
+	public void addPassenger(Passenger pPassenger){
+		this.fPassengers.add(pPassenger);
 	}
 	public List<Meal> getMeals() {
 		return fMeals;
