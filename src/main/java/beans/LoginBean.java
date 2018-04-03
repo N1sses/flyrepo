@@ -1,4 +1,4 @@
-package de.hsw.flightmanager;
+package beans;
 
 import java.io.Serializable;
 
@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.servlet.http.HttpSession;
 
 import model.User;
 
@@ -19,7 +18,7 @@ import model.User;
 @RequestScoped
 public class LoginBean implements Serializable {
 	
-	@ManagedProperty(value = "#{userBean}")
+	@ManagedProperty(value="#{userBean}")
 	private UserBean userBean;
 	
 	public UserBean getUserBean() {
@@ -72,14 +71,27 @@ public class LoginBean implements Serializable {
 
 		try{
 			User user = (User) userQuery.getSingleResult();
-			this.userBean.setCurrentUser(user);
-			return "home";
+			if(getPwd().equals(user.getPassword())){
+				user.setPassword(null);
+				this.userBean.setCurrentUser(user);
+				return "home";
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Incorrect password",
+								"Please enter correct password"));
+				return "login";
+			}
+			
+			
+			
 		} catch (Exception e){
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Incorrect Username and Passowrd",
-							"Please enter correct username and Password"));
+							"Incorrect Username",
+							"Please enter correct username and the corresponding password"));
 			return "login";
 		}
 		

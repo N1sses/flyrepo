@@ -20,32 +20,32 @@ public class Aircraft {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="AircraftID")
-	private String fID;
+	private String id;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="AircraftModelID")
-	private AircraftModel fModel;
+	private AircraftModel model;
 	
-	@OneToMany(mappedBy = "fAircraft")
-	private List<Flight> fFlights;
+	@OneToMany(mappedBy = "aircraft")
+	private List<Flight> flights;
 
 	//Getters and Setters
 	public String getID() {
-		return fID;
+		return this.id;
 	}
-	public void setID(String pID) {
-		this.fID = pID;
+	public void setID(String id) {
+		this.id = id;
 	}
 	public AircraftModel getModel() {
-		return fModel;
+		return this.model;
 	}
-	public void setModel(AircraftModel pModel) {
-		this.fModel = pModel;
+	public void setModel(AircraftModel model) {
+		this.model = model;
 	}
 	public List<Flight> getFlights() {
-		return fFlights;
+		return this.flights;
 	}
-	public void setFlights(List<Flight> pFlights) {
-		this.fFlights = pFlights;
+	public void setFlights(List<Flight> flights) {
+		this.flights = flights;
 	}
 }

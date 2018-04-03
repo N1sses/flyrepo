@@ -14,30 +14,30 @@ public class AircraftModel {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="AircraftModelID")
-	private int fID;
+	private int id;
 	
 	@Column(name="Name")
-	private String fName;
+	private String name;
 	@Column(name="Capacity")
-	private int fCapacity;
+	private int capacity;
 	
 	//Getters and Setters
 	public int getID() {
-		return fID;
+		return this.id;
 	}
-	public void setID(int pID) {
-		this.fID = pID;
+	public void setID(int id) {
+		this.id = id;
 	}
 	public String getName() {
-		return fName;
+		return name;
 	}
-	public void setName(String pName) {
-		this.fName = pName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public int getCapacity() {
-		return fCapacity;
+		return capacity;
 	}
-	public void setCapacity(int pCapacity) {
-		this.fCapacity = pCapacity;
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	} 
 }

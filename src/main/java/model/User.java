@@ -13,44 +13,44 @@ import javax.persistence.Table;
 
 @Entity(name="User")
 @Table(name="user")
-@NamedQuery(name="User.findByName", query="SELECT u FROM User u WHERE u.fUsername = :name") 
+@NamedQuery(name="User.findByName", query="SELECT u FROM User u WHERE u.username = :name") 
 public class User {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="UserID")
-	private int fID;
+	private int id;
 	@Column(name="Username")
-	private String fUsername;
+	private String username;
 	@Column(name="Password")
-	private String fPassword;
+	private String password;
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="RoleID")
-	private Role fRole; 
+	private Role role; 
 	
 	
 	public int getID() {
-		return fID;
+		return this.id;
 	}
-	public void setID(int pID) {
-		this.fID = pID;
+	public void setID(int id) {
+		this.id = id;
 	}
 	public String getUsername() {
-		return fUsername;
+		return this.username;
 	}
-	public void setUsername(String pUsername) {
-		this.fUsername = pUsername;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
-		return fPassword;
+		return this.password;
 	}
-	public void setPassword(String pPassword) {
-		this.fPassword = pPassword;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public Role getRole() {
-		return fRole;
+		return this.role;
 	}
-	public void setRole(Role pRole) {
-		this.fRole = pRole;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 }

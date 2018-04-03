@@ -10,53 +10,55 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
 @Entity(name = "Airway")
 @Table(name = "airway")
+@NamedQuery(name="Airway.findAll", query="SELECT a FROM Airway a")
 public class Airway {
 	// Attributes
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="AirwayID")
-	private int fID;
+	private int id;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="StartID")
-	private Airport fStart;
+	private Airport start;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="DestinationID")
-	private Airport fDestination;
+	private Airport destination;
 
-	@OneToMany(mappedBy="fAirway")
-	private List<Flight> fFlights;
+	@OneToMany(mappedBy="airway")
+	private List<Flight> flights;
 
 	//Getters and Setters
 	public int getID() {
-		return this.fID;
+		return this.id;
 	}
-	public void setID(int pID) {
-		this.fID = pID;
+	public void setID(int id) {
+		this.id = id;
 	}
 	public Airport getStart() {
-		return fStart;
+		return this.start;
 	}
-	public void setStart(Airport pStart) {
-		this.fStart = pStart;
+	public void setStart(Airport start) {
+		this.start = start;
 	}
 	public Airport getDestination() {
-		return fDestination;
+		return this.destination;
 	}
-	public void setDestination(Airport pDestination) {
-		this.fDestination = pDestination;
+	public void setDestination(Airport destination) {
+		this.destination = destination;
 	}
 	public List<Flight> getFlights() {
-		return fFlights;
+		return this.flights;
 	}
-	public void setFlights(List<Flight> pFlights) {
-		this.fFlights = pFlights;
+	public void setFlights(List<Flight> flights) {
+		this.flights = flights;
 	}
 }
