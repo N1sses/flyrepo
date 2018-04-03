@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Gericht hinzufügen</title>
+</h:head>
+<h:body>
+<h1> Gericht zu einem Flug hinzufügen! </h1>
+<h:form>
+		<table><tr><td>
+		<label for="meal">
+		Gericht: 
+		</label>
+		</td><td>
+        <h:selectOneMenu id="meal" value="#{addMealBean.mealID}">
+   			<f:selectItems value="#{addMealBean.existingMeals}" var="meal" itemLabel="#{meal.name}" itemValue="#{meal.ID}"/>
+   		</h:selectOneMenu>
+   		</td></tr>
+   		<tr><td>
+		<label for="flight">
+		Flug: 
+		</label>
+		</td><td>
+        <h:selectOneMenu id="flight" value="#{addMealBean.flightID}">
+   			<f:selectItems value="#{addMealBean.existingFlights}" var="flight" itemLabel="Von #{flight.airway.start.iataCode} Nach #{flight.airway.destination.iataCode} Abflug: #{flight.departure}" itemValue="#{flight.ID}"/>
+   		</h:selectOneMenu>
+   		</td></tr>
+		<tr><td/><td>
+		<h:commandButton value="Gericht hinzufügen" action="#{addMealBean.saveMenu}"/>
+		</td></tr></table>
+</h:form>
+
+</h:body>
+</html>

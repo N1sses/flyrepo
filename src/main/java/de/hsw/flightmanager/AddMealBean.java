@@ -12,61 +12,97 @@ import javax.persistence.Persistence;
 
 import model.Airport;
 import model.Airway;
+import model.Flight;
+import model.Meal;
+import model.Passenger;
 
 @ManagedBean
 @SessionScoped
 public class AddMealBean {
 	
 	private EntityManagerFactory emf;
-	//private Menu airway;
-	private String start;
-	@ManagedProperty(value="#{existingAirports}")
-	private List<Airport> existingAirports;
 	
-	public String getStart() {
-		return start;
-	}
-
-	public void setStart(String start) {
-		this.start = start;
-	}
-
-	public String getDestination() {
-		return destination;
-	}
-
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-
-	private String destination;
+	private Flight flight;
+	private Meal meal;
+	private String mealID;
+	private String flightID;
+	@ManagedProperty(value="#{existingMeals}")
+	private List<Meal> existingMeals;
+	@ManagedProperty(value="#{existingFlights}")
+	private List<Flight> existingFlights;
 	
 	
-	public List<Airport> getExistingAirports() {
+	public Flight getFlight() {
+		return flight;
+	}
+
+	public void setFlight(Flight flight) {
+		this.flight = flight;
+	}
+
+	public Meal getMeal() {
+		return meal;
+	}
+
+	public void setMeal(Meal meal) {
+		this.meal = meal;
+	}
+
+	public String getMealID() {
+		return mealID;
+	}
+
+	public void setMealID(String mealID) {
+		this.mealID = mealID;
+	}
+
+	public String getFlightID() {
+		return flightID;
+	}
+
+	public void setFlightID(String flightID) {
+		this.flightID = flightID;
+	}
+
+	public void setExistingMeals(List<Meal> existingMeals) {
+		this.existingMeals = existingMeals;
+	}
+
+
+	public void setExistingFlights(List<Flight> existingFlights) {
+		this.existingFlights = existingFlights;
+	}
+
+	public List<Meal> getExistingMeals() {
 		emf = Persistence.createEntityManagerFactory("flightdb");
 		EntityManager em = emf.createEntityManager();
-		List<Airport> result = em.createQuery("SELECT ap from Airport ap", Airport.class).getResultList();
+		List<Meal> result = em.createQuery("SELECT m from Meal m", Meal.class).getResultList();
 		em.close();
 		emf.close();
 		return result;
 	}
 	
-	public void setExistingAirports(List<Airport> existingAirports) {
-		this.existingAirports = existingAirports;
+	public List<Flight> getExistingFlights() {
+		emf = Persistence.createEntityManagerFactory("flightdb");
+		EntityManager em = emf.createEntityManager();
+		List<Flight> result = em.createQuery("SELECT f from Flight f", Flight.class).getResultList();
+		em.close();
+		emf.close();
+		return result;
 	}
 	
-	public void saveAirway(){
+	public void saveMenu(){
 		emf = Persistence.createEntityManagerFactory("flightdb");
 		EntityManager em = emf.createEntityManager();
 		
-		//this.airway = new Airway();
-		//this.airway.setStart(em.find(Airport.class, new Integer(this.start)));
-		//this.airway.setDestination(em.find(Airport.class, new Integer(this.destination)));
+		this.meal = em.find(Meal.class, new Integer(this.mealID));
+		this.flight = em.find(Flight.class, this.flightID);
+		this.flight.addMeal(this.meal);
 
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		
-		//em.persist(airway);
+		em.persist(flight);
 		em.flush();
 		tx.commit();
 		em.close();

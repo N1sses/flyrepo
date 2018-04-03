@@ -84,7 +84,7 @@ public class Flight {
 		this.passengers = passengers;
 	}
 	public void addPassenger(Passenger pPassenger){
-		this.fPassengers.add(pPassenger);
+		this.passengers.add(pPassenger);
 	}
 	public List<Meal> getMeals() {
 		return this.meals;
@@ -120,6 +120,9 @@ public class Flight {
 		} else {
 			return Status.COMPLETED;
 		}
+	}
+	public void addMeal(Meal meal) {
+		this.meals.add(meal);
 	}
 
 }
