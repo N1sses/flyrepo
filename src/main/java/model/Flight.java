@@ -14,99 +14,105 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
 @Entity(name = "Flight")
 @Table(name = "flight")
+@NamedQuery(name="Flight.findAll", query="SELECT f FROM Flight f")
 public class Flight {
 	//Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="FlightID")
-	private String fID;
+	private String id;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="AirwayID")
-	private Airway fAirway;
+	private Airway airway;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="AircraftID")
-	private Aircraft fAircraft;
-	 
+	private Aircraft aircraft;
+	
 	@Convert(converter = LocalDateTimeAttributeConverter.class)
 	@Column(name="Arrival" )
-	private LocalDateTime fArrival;
+	private LocalDateTime arrival;
 	@Convert(converter = LocalDateTimeAttributeConverter.class)
 	@Column(name="Departure")
-	private LocalDateTime fDeparture;
+	private LocalDateTime departure;
 	
 	@ManyToMany
 	@JoinTable(
 		      name="booking",
 		      joinColumns=@JoinColumn(name="FlightID", referencedColumnName="FlightID"),
 		      inverseJoinColumns=@JoinColumn(name="PassengerID", referencedColumnName="PassengerID"))
-	private List<Passenger> fPassengers;
+	private List<Passenger> passengers;
 	
 	@ManyToMany
 	@JoinTable(
 		      name="menu",
 		      joinColumns=@JoinColumn(name="FlightID", referencedColumnName="FlightID"),
 		      inverseJoinColumns=@JoinColumn(name="MealID", referencedColumnName="MealID"))
-	private List<Meal> fMeals;
+	private List<Meal> meals;
 	
 	
 	//Getters and Setters
 	public String getID() {
-		return fID;
+		return this.id;
 	}
-	public void setID(String pID) {
-		this.fID = pID;
+	public void setID(String id) {
+		this.id = id;
 	}
 	public Airway getAirway() {
-		return fAirway;
+		return this.airway;
 	}
-	public void setAirway(Airway pAirway) {
-		this.fAirway = pAirway;
+	public void setAirway(Airway airway) {
+		this.airway = airway;
 	}
 	public Aircraft getAircraft() {
-		return fAircraft;
+		return this.aircraft;
 	}
-	public void setAircraft(Aircraft pAircraft) {
-		this.fAircraft = pAircraft;
+	public void setAircraft(Aircraft aircraft) {
+		this.aircraft = aircraft;
 	}
 	public List<Passenger> getPassengers() {
-		return fPassengers;
+		return this.passengers;
 	}
-	public void setPassengers(List<Passenger> pPassengers) {
-		this.fPassengers = pPassengers;
+	public void setPassengers(List<Passenger> passengers) {
+		this.passengers = passengers;
 	}
 	public List<Meal> getMeals() {
-		return fMeals;
+		return this.meals;
 	}
-	public void setMeals(List<Meal> pMeals) {
-		this.fMeals = pMeals;
+	public void setMeals(List<Meal> meals) {
+		this.meals = meals;
 	}
 	public LocalDateTime getArrival() {
-		return fArrival;
+		return this.arrival;
 	}
-	public void setArrival(LocalDateTime pArrival) {
-		this.fArrival = pArrival;
+	public void setArrival(LocalDateTime arrival) {
+		this.arrival = arrival;
 	}
 	public LocalDateTime getDeparture() {
-		return fDeparture;
+		return this.departure;
 	}
-	public void setDeparture(LocalDateTime pDeparture) {
-		this.fDeparture = pDeparture;
+	public void setDeparture(LocalDateTime departure) {
+		this.departure = departure;
+	}
+	
+	public int getPassengerCount(){
+		return this.passengers.size();
 	}
 	
 	public Status getStatus(){
 		LocalDateTime lCurrentTime = LocalDateTime.now();
-		if(lCurrentTime.isBefore(this.fDeparture)){
+		if(lCurrentTime.isBefore(this.departure)){
 			return Status.SCHEDULED;
-		} else if (lCurrentTime.isBefore(this.fArrival)){
+		} else if (lCurrentTime.isBefore(this.arrival)){
 			return Status.DEPARTED;
-		} else if (lCurrentTime.isBefore(this.fArrival.plusHours(1))){
+		} else if (lCurrentTime.isBefore(this.arrival.plusHours(1))){
 			return Status.LANDED;
 		} else {
 			return Status.COMPLETED;

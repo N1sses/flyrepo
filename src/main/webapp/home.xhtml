@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>A Simple JavaServer Faces 2.0 View</title>
+</h:head>
+<h:body>
+Logged in as: #{userBean.currentUser.username} [#{userBean.currentUser.role.name}] 
+
+
+
+<p:tabView>
+		<p:tab title="Flights">
+			<h:panelGrid columns="2" cellpadding="10">
+				<h:form>
+					<p:dataTable var="flight" value="#{flightBean.flights}"
+						widgetVar="flightsTable"
+						emptyMessage="No flights found with given criteria"
+						filteredValue="#{flightBean.filteredFlights}">
+
+						<p:column headerText="Start"
+							filterBy="#{flight.airway.start.iataCode}"
+							filterMatchMode="equals">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('flightsTable').filter()">
+									<f:selectItem itemLabel="Select One" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{airportBean.airports}" var="airport"
+										itemLabel="#{airport.iataCode}"
+										itemValue="#{airport.iataCode}" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="#{flight.airway.start.iataCode}" />
+						</p:column>
+
+						<p:column headerText="Destination">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('flightsTable').filter()">
+									<f:selectItem itemLabel="Select One" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{airportBean.airports}" var="airport"
+										itemLabel="#{airport.iataCode}"
+										itemValue="#{airport.iataCode}" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="#{flight.airway.destination.iataCode}" />
+						</p:column>
+
+						<p:column headerText="Departure">
+							<h:outputText value="#{flight.departure}" />
+						</p:column>
+
+						<p:column headerText="Arrival">
+							<h:outputText value="#{flight.arrival}" />
+						</p:column>
+						<p:column
+							rendered="#{userBean.currentUser.role.name == 'Manager'}"
+							headerText="Capacity">
+							<h:outputText
+								value="#{flight.passengerCount}/#{flight.aircraft.model.capacity}" />
+						</p:column>
+						<p:column headerText="Bookings">
+							<p:commandButton value="Details" actionListener="#{flightBean.setSelectedFlight(flight)}" async="true" ajax="true"
+								onclick="PF('bookings').show();" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+
+				<p:dialog header="Bookings" widgetVar="bookings" minHeight="40">
+					<h:outputText
+						value="From #{flightBean.selectedFlight.airway.start.iataCode} to #{flightBean.selectedFlight.airway.destination.iataCode}" />
+					<h:outputText
+						value="From #{flightBean.selectedFlight.departure} till #{flightBean.selectedFlight.arrival}" />
+						<h:form>
+					<p:dataTable var="passenger" value="#{flightBean.selectedFlight.passengers}">
+						<p:column headerText="Name"> 
+							<h:outputText value="#{passenger.name}" />
+						</p:column>
+						<p:column headerText="Surname">
+							<h:outputText value="#{passenger.surname}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+				</p:dialog>
+			</h:panelGrid>
+		</p:tab>
+		<p:tab title="Airways">
+			<h:panelGrid columns="2" cellpadding="10">
+
+				<h:form>
+					<p:dataTable var="airway" value="#{airwayBean.airways}"
+						widgetVar="airwaysTable"
+						emptyMessage="No airways found with given criteria"
+						filteredValue="#{airwayBean.filteredAirways}">
+						<p:column headerText="Start" filterBy="#{airway.start.iataCode}"
+							filterMatchMode="equals">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('airwaysTable').filter()">
+									<f:selectItem itemLabel="Select One" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{airportBean.airports}" var="airport"
+										itemLabel="#{airport.iataCode}"
+										itemValue="#{airport.iataCode}" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="#{airway.start.iataCode}" />
+						</p:column>
+
+						<p:column headerText="Destination"
+							filterBy="#{airway.destination}" filterMatchMode="equals">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('airwaysTable').filter()">
+									<f:selectItem itemLabel="Select One" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{airportBean.airports}" var="airport"
+										itemLabel="#{airport.iataCode}" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="#{airway.destination.iataCode}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+
+
+			</h:panelGrid>
+		</p:tab>
+
+
+	</p:tabView>
+
+
+</h:body>
+</html>

@@ -5,32 +5,38 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
 @Entity(name = "Airport")
 @Table(name = "airport")
+@NamedQueries({
+	@NamedQuery(name="Airport.findAll", query="SELECT a FROM Airport a"),
+	@NamedQuery(name="Airport.findByIataCode", query="SELECT a FROM Airport a WHERE a.iataCode = :iatacode")
+})
 public class Airport {
 	//Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="AirportID")
-	private int fID;
+	private int id;
 	
 	@Column(name="IataCode")
-	private String fIataCode;
+	private String iataCode;
 	
 	//Getters and Setters
 	public int getID() {
-		return this.fID;
+		return this.id;
 	}
-	public void setID(int pID) {
-		this.fID = pID;
+	public void setID(int id) {
+		this.id = id;
 	}
 	public String getIataCode() {
-		return fIataCode;
+		return this.iataCode;
 	}
-	public void setIataCode(String pIataCode) {
-		this.fIataCode = pIataCode;
+	public void setIataCode(String iataCode) {
+		this.iataCode = iataCode;
 	}
 }

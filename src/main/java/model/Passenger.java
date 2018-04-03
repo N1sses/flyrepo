@@ -8,47 +8,51 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity(name = "Passenger")
 @Table(name = "passenger")
+	@NamedQuery(name="Passenger.findAll", query="SELECT p FROM Passenger p")
+	
+
 public class Passenger {
 	//Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PassengerID")
-	private int fID;
+	private int id;
 	@Column(name="Name")
-	private String fName;
+	private String name;
 	@Column(name="Surname")
-	private String fSurname;
+	private String surname;
 	
-	@ManyToMany(mappedBy="fPassengers")
-	private List<Flight> fFlights;
+	@ManyToMany(mappedBy="passengers")
+	private List<Flight> flights;
 
 	//Getters and Setters
 	public int getID() {
-		return this.fID;
+		return this.id;
 	}
-	public void setID(int pID) {
-		this.fID = pID;
+	public void setID(int id) {
+		this.id = id;
 	}
 	public String getName() {
-		return fName;
+		return this.name;
 	}
-	public void setName(String pName) {
-		this.fName = pName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getSurname() {
-		return fSurname;
+		return this.surname;
 	}
-	public void setSurname(String pSurname) {
-		this.fSurname = pSurname;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 	public List<Flight> getFlights() {
-		return fFlights;
+		return this.flights;
 	}
 	public void addFlight(Flight pFlight) {
-		this.fFlights.add(pFlight);
+		this.flights.add(pFlight);
 	}
 }
