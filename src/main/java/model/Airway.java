@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -18,10 +19,10 @@ import javax.persistence.Table;
 @Entity(name = "Airway")
 @Table(name = "airway")
 @NamedQuery(name="Airway.findAll", query="SELECT a FROM Airway a")
-public class Airway {
+public class Airway implements Serializable {
 	// Attributes
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="AirwayID")
 	private int id;
 	
@@ -60,5 +61,18 @@ public class Airway {
 	}
 	public void setFlights(List<Flight> flights) {
 		this.flights = flights;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.id;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof Airway) {
+			return ((Airway) other).getID() == this.getID();
+		}
+		return false;
 	}
 }

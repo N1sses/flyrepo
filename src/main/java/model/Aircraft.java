@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,15 +11,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity(name = "Aircraft")
 @Table(name = "aircraft")
-public class Aircraft {
+@NamedQuery(name="Aircraft.findAll", query="SELECT a FROM Aircraft a")
+public class Aircraft implements Serializable {
 	//Attributes
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="AircraftID")
 	private String id;
 	
@@ -47,5 +50,17 @@ public class Aircraft {
 	}
 	public void setFlights(List<Flight> flights) {
 		this.flights = flights;
+	}
+	@Override 
+	public int hashCode() {
+		return Integer.parseInt(this.id);
+	}
+	
+	@Override 
+	public boolean equals(Object other) {
+		if (other instanceof Aircraft) {
+			return ((Aircraft) other).getID() == this.getID();
+		}
+		return false;
 	}
 }

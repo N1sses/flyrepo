@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<faces-config xmlns="http://java.sun.com/xml/ns/javaee" 
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-   http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd" 
-   version="1.2"> 
-   <converter>
-    <converter-id>iataCodeConverter</converter-id>
-    <converter-class>converter.IataCodeConverter</converter-class>
-</converter>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+   http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+	version="1.2">
+	<converter>
+		<converter-id>iataCodeConverter</converter-id>
+		<converter-class>converter.IataCodeConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>airportConverter</converter-id>
+		<converter-class>converter.AirportConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>aircraftConverter</converter-id>
+		<converter-class>converter.AircraftConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>airwayConverter</converter-id>
+		<converter-class>converter.AirwayConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>mealConverter</converter-id>
+		<converter-class>converter.MealConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>flightConverter</converter-id>
+		<converter-class>converter.FlightConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>aircraftModelConverter</converter-id>
+		<converter-class>converter.AircraftModelConverter</converter-class>
+	</converter>
 </faces-config>

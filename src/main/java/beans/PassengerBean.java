@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -12,11 +13,13 @@ import services.PassengerService;
 
 @ManagedBean(name = "passengerBean")
 @ViewScoped
-public class PassengerBean {
+public class PassengerBean implements Serializable  {
 
 	private List<Passenger> passengers;
 
 	private List<Passenger> filteredPassengers;
+	
+	private Passenger selectedPassenger;
 
 	@EJB
 	private PassengerService ps;
@@ -40,5 +43,13 @@ public class PassengerBean {
 
 	public void setFilteredPassengers(List<Passenger> filteredPassengers) {
 		this.filteredPassengers = filteredPassengers;
+	}
+	
+	public void setSelectedPassenger(Passenger passenger){
+		this.selectedPassenger=passenger;
+	}
+	
+	public Passenger getSelectedPassenger(){
+		return this.selectedPassenger;
 	}
 }

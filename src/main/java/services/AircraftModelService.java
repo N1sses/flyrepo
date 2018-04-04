@@ -7,23 +7,24 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 
 import model.AircraftModel;
-import model.Flight;
 
-@Stateless(name = "flightService")
-public class FlightService {
-
+@Stateless(name="aircraftModelService")
+public class AircraftModelService {
+	
 	@EJB
 	private EntityManagerProvider emp;
-
-	public List<Flight> getFlights() {
-		return emp.getEntitiyManager().createNamedQuery("Flight.findAll", Flight.class).getResultList();
+	
+	public List<AircraftModel> getAircraftModels() {
+		return emp.getEntitiyManager().createNamedQuery("AircraftModel.findAll", AircraftModel.class).getResultList();
 	}
 	
-	public void persistFlight(Flight flight) {
+	public void persistAircraftModel(AircraftModel aircraftModel) {
 		EntityManager em = emp.getEntitiyManager();
 		em.getTransaction().begin();
-		em.persist(flight);
+		em.persist(aircraftModel);
 		em.getTransaction().commit();
 		em.close();
 	}
+	
+
 }

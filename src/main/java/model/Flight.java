@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,10 +22,10 @@ import javax.persistence.Table;
 @Entity(name = "Flight")
 @Table(name = "flight")
 @NamedQuery(name="Flight.findAll", query="SELECT f FROM Flight f")
-public class Flight {
+public class Flight implements Serializable {
 	//Attributes
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="FlightID")
 	private String id;
 	
@@ -106,6 +107,10 @@ public class Flight {
 		return this.passengers.size();
 	}
 	
+	public void addPassenger(Passenger passenger){
+		this.passengers.add(passenger);
+	}
+	
 	public Status getStatus(){
 		LocalDateTime lCurrentTime = LocalDateTime.now();
 		if(lCurrentTime.isBefore(this.departure)){
@@ -117,6 +122,19 @@ public class Flight {
 		} else {
 			return Status.COMPLETED;
 		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return Integer.parseInt(this.id);
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof Flight) {
+			return ((Flight) other).getID() == this.getID();
+		}
+		return false;
 	}
 
 }

@@ -9,17 +9,14 @@
 <h:body>
 Logged in as: #{userBean.currentUser.username} [#{userBean.currentUser.role.name}] 
 
-
-
-<p:tabView>
-		<p:tab title="Flights">
-			<h:panelGrid columns="2" cellpadding="10">
-				<h:form>
+<h:form>
+		<p:tabView>
+			<p:tab title="Flights">
+				<h:panelGrid columns="2" cellpadding="10">
 					<p:dataTable var="flight" value="#{flightBean.flights}"
 						widgetVar="flightsTable"
 						emptyMessage="No flights found with given criteria"
 						filteredValue="#{flightBean.filteredFlights}">
-
 						<p:column headerText="Start"
 							filterBy="#{flight.airway.start.iataCode}"
 							filterMatchMode="equals">
@@ -34,7 +31,6 @@ Logged in as: #{userBean.currentUser.username} [#{userBean.currentUser.role.name
 							</f:facet>
 							<h:outputText value="#{flight.airway.start.iataCode}" />
 						</p:column>
-
 						<p:column headerText="Destination">
 							<f:facet name="filter">
 								<p:selectOneMenu onchange="PF('flightsTable').filter()">
@@ -47,13 +43,14 @@ Logged in as: #{userBean.currentUser.username} [#{userBean.currentUser.role.name
 							</f:facet>
 							<h:outputText value="#{flight.airway.destination.iataCode}" />
 						</p:column>
-
 						<p:column headerText="Departure">
 							<h:outputText value="#{flight.departure}" />
 						</p:column>
-
 						<p:column headerText="Arrival">
 							<h:outputText value="#{flight.arrival}" />
+						</p:column>
+						<p:column headerText="Status">
+							<h:outputText value="#{flight.status}" />
 						</p:column>
 						<p:column
 							rendered="#{userBean.currentUser.role.name == 'Manager'}"
@@ -62,35 +59,17 @@ Logged in as: #{userBean.currentUser.username} [#{userBean.currentUser.role.name
 								value="#{flight.passengerCount}/#{flight.aircraft.model.capacity}" />
 						</p:column>
 						<p:column headerText="Bookings">
-							<p:commandButton value="Details" actionListener="#{flightBean.setSelectedFlight(flight)}" async="true" ajax="true"
-								onclick="PF('bookings').show();" />
-						</p:column>
-
-					</p:dataTable>
-				</h:form>
-
-				<p:dialog header="Bookings" widgetVar="bookings" minHeight="40">
-					<h:outputText
-						value="From #{flightBean.selectedFlight.airway.start.iataCode} to #{flightBean.selectedFlight.airway.destination.iataCode}" />
-					<h:outputText
-						value="From #{flightBean.selectedFlight.departure} till #{flightBean.selectedFlight.arrival}" />
-						<h:form>
-					<p:dataTable var="passenger" value="#{flightBean.selectedFlight.passengers}">
-						<p:column headerText="Name"> 
-							<h:outputText value="#{passenger.name}" />
-						</p:column>
-						<p:column headerText="Surname">
-							<h:outputText value="#{passenger.surname}" />
+							<p:commandButton value="Details" update="@(.detailsDialog)"
+								actionListener="#{flightBean.setSelectedFlight(flight)}"
+								async="true" ajax="true" onclick="PF('bookings').show();" />
 						</p:column>
 					</p:dataTable>
-				</h:form>
-				</p:dialog>
-			</h:panelGrid>
-		</p:tab>
-		<p:tab title="Airways">
-			<h:panelGrid columns="2" cellpadding="10">
-
-				<h:form>
+					<p:commandButton value="New Flight"
+						onclick="PF('flightDialog').show();" type="button" />
+				</h:panelGrid>
+			</p:tab>
+			<p:tab title="Airways">
+				<h:panelGrid columns="2" cellpadding="10">
 					<p:dataTable var="airway" value="#{airwayBean.airways}"
 						widgetVar="airwaysTable"
 						emptyMessage="No airways found with given criteria"
@@ -108,7 +87,6 @@ Logged in as: #{userBean.currentUser.username} [#{userBean.currentUser.role.name
 							</f:facet>
 							<h:outputText value="#{airway.start.iataCode}" />
 						</p:column>
-
 						<p:column headerText="Destination"
 							filterBy="#{airway.destination}" filterMatchMode="equals">
 							<f:facet name="filter">
@@ -122,15 +100,179 @@ Logged in as: #{userBean.currentUser.username} [#{userBean.currentUser.role.name
 							<h:outputText value="#{airway.destination.iataCode}" />
 						</p:column>
 					</p:dataTable>
-				</h:form>
+					<p:commandButton value="New Airway"
+						onclick="PF('airwayDialog').show();" type="button" />
+				</h:panelGrid>
+			</p:tab>
+			<p:tab title="Passengers">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:dataTable var="passenger" value="#{passengerBean.passengers}"
+						widgetVar="passengersTable"
+						emptyMessage="No passengers found with given criteria"
+						filteredValue="#{passengerBean.filteredPassengers}">
+						<p:column headerText="Name" filterBy="#{passenger.name}"
+							filterMatchMode="contains">
+							<h:outputText value="#{passenger.name}" />
+						</p:column>
+						<p:column headerText="Surname" filterBy="#{passenger.surname}"
+							filterMatchMode="contains">
+							<h:outputText value="#{passenger.surname}" />
+						</p:column>
+						<p:column headerText="Bookings">
+							<p:commandButton value="Details" update="@(.detailsDialog2)"
+								actionListener="#{passengerBean.setSelectedPassenger(passenger)}"
+								async="true" ajax="true" onclick="PF('bookings2').show();" />
+						</p:column>
+					</p:dataTable>
+					<p:commandButton value="New Passenger"
+						onclick="PF('passengerDialog').show();" type="button" />
+				</h:panelGrid>
+			</p:tab>
+			<p:tab title="Aircrafts"
+				rendered="#{userBean.currentUser.role.name == 'Manager'}">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:dataTable var="aircraft" value="#{aircraftBean.aircrafts}"
+						widgetVar="aircraftsTable"
+						emptyMessage="No aircrafts found with given criteria"
+						filteredValue="#{aircraftBean.filteredAircrafts}">
+						<p:column headerText="Type" filterBy="#{aircraft.model}"
+							filterMatchMode="equals">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('aircraftsTable').filter()">
+									<f:selectItem itemLabel="Select One" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{aircraftModelBean.aircraftModels}"
+										var="aircraftModel" itemLabel="#{aircraftModel.name}"
+										itemValue="#{aircraftModel.name}" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="#{aircraft.model.name}" />
+						</p:column>
+						<p:column headerText="Capacity">
+							<h:outputText value="#{aircraft.model.capacity}" />
+						</p:column>
+					</p:dataTable>
+					<p:commandButton value="New Aircraft"
+						onclick="PF('aircraftDialog').show();" type="button" />
+				</h:panelGrid>
+			</p:tab>
+		</p:tabView>
+		
+		
+		<p:dialog header="Bookings" widgetVar="bookings" minHeight="40">
+			<h:panelGroup styleClass="detailsDialog" id="somehowNecessary">
+				<h:outputText
+					value="From #{flightBean.selectedFlight.airway.start.iataCode} to #{flightBean.selectedFlight.airway.destination.iataCode}" />
+				<br />
+				<h:outputText
+					value="From #{flightBean.selectedFlight.departure} till #{flightBean.selectedFlight.arrival}" />
+				<p:dataTable var="passenger"
+					value="#{flightBean.selectedFlight.passengers}">
+					<p:column headerText="Name">
+						<h:outputText value="#{passenger.name}" />
+					</p:column>
+					<p:column headerText="Surname">
+						<h:outputText value="#{passenger.surname}" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</p:dialog>
+		
+		
+		<p:dialog header="Bookings" widgetVar="bookings2" minHeight="40">
+			<h:panelGroup styleClass="detailsDialog2" id="somehowNecessary2">
+				<h:outputText
+					value="#{passengerBean.selectedPassenger.name} #{passengerBean.selectedPassenger.surname}" />
+				<p:dataTable var="flight"
+					value="#{passengerBean.selectedPassenger.flights}">
+					<p:column headerText="Start">
+						<h:outputText value="#{flight.airway.start.iataCode}" />
+					</p:column>
+					<p:column headerText="Destination">
+						<h:outputText value="#{flight.airway.destination.iataCode}" />
+					</p:column>
+					<p:column headerText="Departure">
+						<h:outputText value="#{flight.departure}" />
+					</p:column>
+					<p:column headerText="Arrival">
+						<h:outputText value="#{flight.arrival}" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</p:dialog>
+		
+
+		<p:dialog header="New Airway" widgetVar="airwayDialog" minHeight="40">
+			<p:outputLabel for="start" value="Start:" />
+			<p:selectOneMenu id="start" converter="airportConverter"
+				value="#{airwayPersistenceBean.newAirway.start}">
+				<f:selectItems value="#{airportBean.airports}" var="airport"
+					itemLabel="#{airport.iataCode}" itemValue="#{airport}" />
+			</p:selectOneMenu>
+			<p:selectOneMenu id="destination" converter="airportConverter"
+				value="#{airwayPersistenceBean.newAirway.destination}">
+				<f:selectItems value="#{airportBean.airports}" var="airport"
+					itemLabel="#{airport.iataCode}" itemValue="#{airport}" />
+			</p:selectOneMenu>
+			<p:commandButton value="Create Airway"
+				actionListener="#{airwayPersistenceBean.persist}" ajax="false" />
+		</p:dialog>
+		
+		
+		<p:dialog header="New Aircraft" widgetVar="aircraftDialog"
+			minHeight="40">
+			<p:outputLabel for="aircraftModel" value="Aircraft Model:" />
+			<p:selectOneMenu id="aircraftModel"
+				converter="aircraftModelConverter"
+				value="#{aircraftPersistenceBean.newAircraft.model}">
+				<f:selectItems value="#{aircraftModelBean.aircraftModels}"
+					var="model" itemLabel="#{model.name}" itemValue="#{model}" />
+			</p:selectOneMenu>
+			<p:commandButton value="Create Aircraft"
+				actionListener="#{aircraftPersistenceBean.persist}" ajax="false" />
+		</p:dialog>
+		
+		
+		<p:dialog header="New Passenger" widgetVar="passengerDialog"
+			minHeight="40">
+			<p:outputLabel for="name" value="Name:" />
+			<p:inputText id="name" value="#{passengerPersistenceBean.newPassenger.name}"/>
+			<p:outputLabel for="surname" value="Surame:" />
+			<p:inputText id="surname" value="#{passengerPersistenceBean.newPassenger.surname}"/>
+			<p:commandButton value="Create Passenger"
+				actionListener="#{passengerPersistenceBean.persist}" ajax="false" />
+		</p:dialog>
+		
+		<p:dialog header="New Flight" widgetVar="flightDialog" minHeight="40">
+
+			<p:outputLabel for="meal" value="Meal:" />
+			<p:selectOneMenu id="meal" converter="mealConverter"
+				value="#{flightPersistenceBean.newFlight.meal}">
+				<f:selectItems value="#{mealBean.meals}" var="meal"
+					itemLabel="#{meal.name}" itemValue="#{meal}" />
+			</p:selectOneMenu>
+			
+			<p:outputLabel for="airway" value="Airway:" />
+			<p:selectOneMenu id="airway" converter="airwayConverter"
+				value="#{flightPersistenceBean.newFlight.airway}">
+				<f:selectItems value="#{airwayBean.airways}" var="airway"
+					itemLabel="#{airway.start.iataCode} to #{airway.destination.iataCode}"
+					itemValue="#{airway}" />
+			</p:selectOneMenu>
+			
+			<p:outputLabel for="aircraft" value="Aircraft:" />
+			<p:selectOneMenu id="aircraft" converter="aircraftConverter"
+				value="#{flightPersistenceBean.newFlight.aircraft}">
+				<f:selectItems value="#{aircraftBean.aircrafts}" var="aircraft"
+					itemLabel="#{aircraft.model.name}"
+					itemValue="#{aircraft}" />
+			</p:selectOneMenu>
+
+			<p:commandButton value="Create Flight"
+				actionListener="#{flightPersistenceBean.persist}" ajax="false" />
+		</p:dialog>
 
 
-			</h:panelGrid>
-		</p:tab>
-
-
-	</p:tabView>
-
-
+	</h:form>
 </h:body>
 </html>

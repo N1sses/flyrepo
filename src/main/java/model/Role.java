@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,17 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity(name = "Role")
-@Table (name="role")
-public class Role {
-	
+@Table(name = "role")
+public class Role implements Serializable {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="RoleID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "RoleID")
 	private int id;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
+
 	public int getID() {
 		return this.id;
 	}
@@ -34,5 +36,17 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return this.id;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof Role) {
+			return ((Role) other).getID() == this.getID();
+		}
+		return false;
+	}
 }

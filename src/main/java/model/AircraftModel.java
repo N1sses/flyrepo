@@ -1,18 +1,22 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity(name = "AircraftModel")
 @Table(name = "aircraftmodel")
-public class AircraftModel {
+@NamedQuery(name="AircraftModel.findAll", query="SELECT a FROM AircraftModel a")
+public class AircraftModel implements Serializable {
 	//Attributes
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="AircraftModelID")
 	private int id;
 	
@@ -40,4 +44,17 @@ public class AircraftModel {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	} 
+	
+	@Override 
+	public int hashCode() {
+		return this.id;
+	}
+	
+	@Override 
+	public boolean equals(Object other) {
+		if (other instanceof AircraftModel) {
+			return ((AircraftModel) other).getID() == this.getID();
+		}
+		return false;
+	}
 }
